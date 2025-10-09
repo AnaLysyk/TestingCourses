@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import YouTube from 'react-youtube';
 import { CheckCircle, ArrowLeft, ArrowRight, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
@@ -14,30 +13,10 @@ import intermediarioTrack from '@/data/tracks/intermediario.json';
 import avancadoTrack from '@/data/tracks/avancado.json';
 
 const trackMap = {
-  gratuito: gratuitoTrack.track,
-  basico: basicoTrack.track,
-  intermediario: intermediarioTrack.track,
-  avancado: avancadoTrack.track,
-};
-
-const getYouTubeVideoId = (url) => {
-  if (!url) return null;
-  try {
-    const urlObj = new URL(url);
-    if (urlObj.hostname === 'youtu.be') {
-      return urlObj.pathname.slice(1);
-    }
-    if (urlObj.hostname.includes('youtube.com')) {
-      if (urlObj.pathname.includes('/embed/')) {
-        return urlObj.pathname.split('/embed/')[1];
-      }
-      return urlObj.searchParams.get('v');
-    }
-  } catch (e) {
-    console.error('Invalid video URL', e);
-    return null;
-  }
-  return null;
+  gratuito: gratuitoTrack.tracks,
+  basico: basicoTrack.tracks,
+  intermediario: intermediarioTrack.tracks,
+  avancado: avancadoTrack.tracks,
 };
 
 const LessonView = () => {
@@ -50,33 +29,107 @@ const LessonView = () => {
   const [showResults, setShowResults] = useState(false);
   const [isPassed, setIsPassed] = useState(false);
 
+  const [activeTab, setActiveTab] = useState('descricao');
+  const [noteInput, setNoteInput] = useState('');
+  const [savedNotes, setSavedNotes] = useState([]);
+
+  const videoRef = useRef(null);
+  const [showOptions, setShowOptions] = useState(false);
+  const [originalTime, setOriginalTime] = useState(0);
+  const [choiceMade, setChoiceMade] = useState(false); // para não mostrar prompt novamente
+
   useEffect(() => {
-    if (lessonId) {
-      const [trackId, moduleIndex, lessonIndex] = lessonId.split('-');
-      const track = trackMap[trackId];
-      if (track && track.modules[moduleIndex] && track.modules[moduleIndex].lessons[lessonIndex]) {
-        const currentLesson = track.modules[moduleIndex].lessons[lessonIndex];
-        const videoId = getYouTubeVideoId(currentLesson.videoUrl);
-        setLesson({
-          ...currentLesson,
-          id: lessonId,
-          videoId: videoId,
-        });
-        setNextLessonId(getNextLessonId(lessonId));
-      } else {
-        setLesson(null);
-      }
+    if (!lessonId) return;
+
+    const [level, trackIdStr, moduleIndexStr, lessonIndexStr] = lessonId.split('-');
+    const trackId = Number(trackIdStr);
+    const moduleIndex = Number(moduleIndexStr);
+    const lessonIndex = Number(lessonIndexStr);
+
+    const trackArray = trackMap[level];
+    if (!trackArray) {
+      setLesson(null);
+      return;
     }
+
+    const track = trackArray.find(t => t.id === trackId);
+    if (!track || !track.modules[moduleIndex]) {
+      setLesson(null);
+      return;
+    }
+
+    const currentLesson = track.modules[moduleIndex].lessons[lessonIndex];
+    if (!currentLesson) {
+      setLesson(null);
+      return;
+    }
+
+    setLesson({
+      ...currentLesson,
+      id: lessonId,
+      level,
+      trackId
+    });
+
+    setNextLessonId(getNextLessonId(lessonId));
     setQuizAnswers({});
     setShowResults(false);
     setIsPassed(false);
+    setSavedNotes([]);
+    setNoteInput('');
+    setShowOptions(false);
+    setOriginalTime(0);
+    setChoiceMade(false);
   }, [lessonId, getNextLessonId]);
 
+  // Vídeo interativo: pausa aos 5s e mostra opções apenas no vídeo original
+  useEffect(() => {
+    if (!videoRef.current) return;
+
+    const handleTimeUpdate = () => {
+      if (!choiceMade && videoRef.current.src.includes('bunny.mp4') && videoRef.current.currentTime >= 5) {
+        videoRef.current.pause();
+        setOriginalTime(videoRef.current.currentTime);
+        setShowOptions(true);
+      }
+    };
+
+    const vid = videoRef.current;
+    vid.addEventListener('timeupdate', handleTimeUpdate);
+
+    return () => vid.removeEventListener('timeupdate', handleTimeUpdate);
+  }, [choiceMade]);
+
+  const handleOptionClick = (option) => {
+    if (!videoRef.current) return;
+
+    setChoiceMade(true);
+    setShowOptions(false);
+
+    if (option === 'continuar') {
+      videoRef.current.currentTime = originalTime;
+      videoRef.current.play();
+    } else {
+      const tempVideo = option; // jelly ou sintel
+      const currentSrc = videoRef.current.src;
+
+      videoRef.current.src = `/${tempVideo}.mp4`;
+      videoRef.current.play();
+
+      const handleEnded = () => {
+        videoRef.current.src = '/bunny.mp4'; // volta para vídeo original
+        videoRef.current.currentTime = originalTime;
+        videoRef.current.play();
+        videoRef.current.removeEventListener('ended', handleEnded);
+      };
+      videoRef.current.addEventListener('ended', handleEnded);
+    }
+  };
+
   const handleQuizSubmit = () => {
-    if (!lesson || !lesson.quiz) return;
-    const correctAnswers = lesson.quiz.filter(
-      (q) => quizAnswers[q.q] === q.answer
-    ).length;
+    if (!lesson?.quiz) return;
+
+    const correctAnswers = lesson.quiz.filter(q => quizAnswers[q.q] === q.answer).length;
     const percentage = (correctAnswers / lesson.quiz.length) * 100;
 
     setShowResults(true);
@@ -106,8 +159,14 @@ const LessonView = () => {
         title: "Trilha Concluída!",
         description: "Você finalizou todas as aulas desta trilha. Parabéns!",
       });
-      navigate(`/dashboard/tracks/${lessonId.split('-')[0]}`);
+      navigate(`/dashboard/tracks/${lesson.level}`);
     }
+  };
+
+  const handleSaveNote = () => {
+    if (!noteInput.trim()) return;
+    setSavedNotes([...savedNotes, { time: '00:27', text: noteInput }]);
+    setNoteInput('');
   };
 
   if (!lesson) {
@@ -123,15 +182,6 @@ const LessonView = () => {
     );
   }
 
-  const youtubeOpts = {
-    height: '100%',
-    width: '100%',
-    playerVars: {
-      autoplay: 0,
-      rel: 0,
-    },
-  };
-
   return (
     <>
       <Helmet>
@@ -142,34 +192,110 @@ const LessonView = () => {
       <div className="space-y-6">
         <Button
           variant="ghost"
-          onClick={() => navigate(`/dashboard/tracks/${lessonId.split('-')[0]}`)}
+          onClick={() => navigate(`/dashboard/tracks/${lesson.level}`)}
           className="mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Voltar para a Trilha
         </Button>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-card rounded-xl shadow-lg overflow-hidden border"
-        >
-          <div className="aspect-video bg-black">
-            {lesson.videoId ? (
-              <YouTube videoId={lesson.videoId} opts={youtubeOpts} className="w-full h-full" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
-                <p>Vídeo indisponível.</p>
+        <div className="grid grid-cols-3 gap-6">
+          {/* Coluna lateral */}
+          <div className="col-span-1 bg-card rounded-xl shadow-lg p-4 border">
+            <div className="flex space-x-2 mb-4">
+              {['descricao', 'material', 'duvidas', 'notas'].map(tab => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-3 py-1 rounded-t-lg font-medium ${activeTab === tab ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+                >
+                  {tab === 'descricao' ? 'Descrição' : tab === 'material' ? 'Material' : tab === 'duvidas' ? 'Dúvidas' : 'Notas'}
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-3">
+              {activeTab === 'descricao' && <p>{lesson.summary}</p>}
+
+              {activeTab === 'material' && (
+                <div className="flex flex-col space-y-2">
+                  <a href="#fakeRepo" className="text-blue-600 underline">Acessar Repositório</a>
+                  <a href="#fakeDownload" className="text-blue-600 underline">Baixar Arquivo do Projeto</a>
+                </div>
+              )}
+
+              {activeTab === 'duvidas' && (
+                <div className="space-y-4">
+                  <div className="p-2 border rounded">
+                    <p className="font-bold">Bruno Mocellin - 09/10/2025</p>
+                    <p>Não consigo abrir o projeto, está dando erro ao iniciar.</p>
+                  </div>
+                  <div className="p-2 border rounded">
+                    <p className="font-bold">Maria Silva - 09/10/2025</p>
+                    <p>Verifique se instalou as dependências com npm install. Isso resolveu para mim.</p>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'notas' && (
+                <div className="space-y-2">
+                  <div className="flex space-x-2">
+                    <input
+                      type="text"
+                      value={noteInput}
+                      onChange={(e) => setNoteInput(e.target.value)}
+                      className="border rounded px-2 py-1 flex-1"
+                      placeholder="Escreva uma nota..."
+                    />
+                    <Button onClick={handleSaveNote} className="px-3">Salvar</Button>
+                  </div>
+                  {savedNotes.length > 0 && (
+                    <div className="mt-2 space-y-1">
+                      {savedNotes.map((note, idx) => (
+                        <div key={idx} className="text-sm border rounded p-1">
+                          <span className="font-mono">{note.time}</span>: {note.text}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Coluna vídeo */}
+          <div className="col-span-2 relative bg-black rounded-xl overflow-hidden aspect-video">
+            <video
+              ref={videoRef}
+              src="/bunny.mp4"
+              className="w-full h-full object-cover"
+              controls
+              onLoadedMetadata={() => {
+                // reset flags ao carregar
+                setChoiceMade(false);
+                setShowOptions(false);
+                setOriginalTime(0);
+              }}
+              onTimeUpdate={() => {
+                if (!choiceMade && videoRef.current.currentTime >= 5) {
+                  videoRef.current.pause();
+                  setOriginalTime(videoRef.current.currentTime);
+                  setShowOptions(true);
+                }
+              }}
+            />
+
+            {showOptions && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 space-y-3">
+                <Button onClick={() => handleOptionClick('jelly')}>Opção 1 - Jelly</Button>
+                <Button onClick={() => handleOptionClick('sintel')}>Opção 2 - Sintel</Button>
+                <Button onClick={() => handleOptionClick('continuar')}>Continuar</Button>
               </div>
             )}
           </div>
+        </div>
 
-          <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">{lesson.title}</h1>
-            <p className="text-muted-foreground">{lesson.summary}</p>
-          </div>
-        </motion.div>
-
+        {/* Quiz */}
         {lesson.quiz && lesson.quiz.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -182,27 +308,16 @@ const LessonView = () => {
             <div className="space-y-6">
               {lesson.quiz.map((question, qIndex) => (
                 <div key={question.q} className="space-y-3">
-                  <p className="font-medium">
-                    {qIndex + 1}. {question.q}
-                  </p>
+                  <p className="font-medium">{qIndex + 1}. {question.q}</p>
                   <div className="space-y-2">
                     {question.choices.map((option, oIndex) => (
                       <label
                         key={oIndex}
                         className={`
                           flex items-center space-x-3 p-3 rounded-lg border-2 cursor-pointer transition-colors
-                          ${quizAnswers[question.q] === oIndex
-                            ? 'border-primary bg-primary/5'
-                            : 'border-border hover:border-primary/50'
-                          }
-                          ${showResults && oIndex === question.answer
-                            ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                            : ''
-                          }
-                          ${showResults && quizAnswers[question.q] === oIndex && oIndex !== question.answer
-                            ? 'border-destructive bg-red-50 dark:bg-red-900/20'
-                            : ''
-                          }
+                          ${quizAnswers[question.q] === oIndex ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}
+                          ${showResults && oIndex === question.answer ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : ''}
+                          ${showResults && quizAnswers[question.q] === oIndex && oIndex !== question.answer ? 'border-destructive bg-red-50 dark:bg-red-900/20' : ''}
                         `}
                       >
                         <input
@@ -220,9 +335,7 @@ const LessonView = () => {
                       </label>
                     ))}
                   </div>
-                  {showResults && (
-                    <p className="text-sm text-muted-foreground pl-4 pt-1">{question.explanation}</p>
-                  )}
+                  {showResults && <p className="text-sm text-muted-foreground pl-4 pt-1">{question.explanation}</p>}
                 </div>
               ))}
             </div>

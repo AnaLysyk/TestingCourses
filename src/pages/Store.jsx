@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import ProductsList from '@/components/ProductsList';
+import ExtraMaterial from '@/pages/ExtraMaterial';
 
 const Store = () => {
   return (
@@ -16,7 +16,7 @@ const Store = () => {
             Encontre produtos incríveis para turbinar sua jornada em QA.
           </p>
         </div>
-        <ProductsList />
+        <ExtraMaterial />
       </div>
     </>
   );

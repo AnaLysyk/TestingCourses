@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Download } from 'lucide-react';
+import { Calendar, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,6 +22,10 @@ const StudyPlan = () => {
     sab: true,
   });
   const [calendar, setCalendar] = useState(null);
+  const [courseSelected, setCourseSelected] = useState(false);
+
+  const totalCourseHours = 15;
+  const courseName = 'Testes de API com Postman';
 
   const days = [
     { key: 'dom', label: 'Dom' },
@@ -38,30 +42,50 @@ const StudyPlan = () => {
     const studyDays = Object.keys(selectedDays).filter(day => selectedDays[day]);
     const calendarDays = [];
 
+    let remainingHours = courseSelected ? totalCourseHours : 0;
+
     for (let i = 1; i <= daysInMonth; i++) {
       const dayOfWeek = days[(i - 1) % 7].key;
       const canStudy = studyDays.includes(dayOfWeek);
-      const hours = canStudy ? Math.min(hoursPerDay, maxSessionHours) : 0;
+      let hours = 0;
+      let showCourse = false;
+
+      if (canStudy) {
+        if (courseSelected && remainingHours > 0) {
+          // Distribui horas até zerar o total do curso
+          hours = Math.min(hoursPerDay, maxSessionHours, remainingHours);
+          remainingHours -= hours;
+          showCourse = true;
+        } else {
+          // Após zerar as horas, volta ao comportamento normal
+          hours = Math.min(hoursPerDay, maxSessionHours);
+        }
+      }
 
       calendarDays.push({
         day: i,
         dayOfWeek,
         hours,
         canStudy,
+        showCourse,
       });
     }
 
     setCalendar(calendarDays);
+
     toast({
-      title: "Calendário gerado!",
-      description: "Seu plano de estudos foi criado com sucesso",
+      title: 'Calendário gerado!',
+      description: courseSelected
+        ? `O curso "${courseName}" foi distribuído em ${totalCourseHours}h totais.`
+        : 'Seu plano de estudos foi criado com sucesso.',
     });
   };
 
   const exportCalendar = () => {
     toast({
-      title: "Exportando...",
-      description: "🚧 Este recurso ainda não está implementado—mas você pode solicitá-lo no próximo prompt! 🚀",
+      title: 'Exportando...',
+      description:
+        '🚧 Este recurso ainda não está implementado — mas você pode solicitá-lo no próximo prompt! 🚀',
     });
   };
 
@@ -69,7 +93,10 @@ const StudyPlan = () => {
     <>
       <Helmet>
         <title>Plano de Estudos - Testing Courses</title>
-        <meta name="description" content="Crie seu plano de estudos personalizado e organize sua rotina de aprendizado" />
+        <meta
+          name="description"
+          content="Crie seu plano de estudos personalizado e organize sua rotina de aprendizado"
+        />
       </Helmet>
 
       <div className="space-y-6">
@@ -80,13 +107,25 @@ const StudyPlan = () => {
           </p>
         </div>
 
-        {/* Configuration */}
+        {/* Configuração */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-card rounded-xl shadow-lg p-6 border"
         >
           <h2 className="text-xl font-bold mb-6">Configurações</h2>
+
+          {/* Curso selecionável */}
+          <div className="flex items-center space-x-3 mb-6">
+            <Checkbox
+              id="course"
+              checked={courseSelected}
+              onCheckedChange={(checked) => setCourseSelected(!!checked)}
+            />
+            <Label htmlFor="course" className="cursor-pointer">
+              Marcar curso em andamento: <strong>{courseName} (15h)</strong>
+            </Label>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div className="space-y-2">
@@ -143,17 +182,13 @@ const StudyPlan = () => {
             </div>
           </div>
 
-          <Button
-            onClick={generateCalendar}
-            className="w-full"
-            variant="destructive"
-          >
+          <Button onClick={generateCalendar} className="w-full" variant="destructive">
             <Calendar className="h-4 w-4 mr-2" />
             Gerar Cronograma
           </Button>
         </motion.div>
 
-        {/* Calendar */}
+        {/* Calendário */}
         {calendar && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -179,16 +214,27 @@ const StudyPlan = () => {
                 <div
                   key={day.day}
                   className={`
-                    aspect-square rounded-lg p-2 flex flex-col items-center justify-center text-sm
+                    relative aspect-square rounded-lg p-2 flex flex-col items-center justify-center text-sm text-center
                     ${day.canStudy
                       ? 'bg-green-100 dark:bg-green-900/30 border-2 border-green-500'
                       : 'bg-red-100 dark:bg-red-900/30 border-2 border-red-300'
                     }
                   `}
                 >
-                  <span className="font-bold">{day.day}</span>
+                  {/* Dia fixo no canto superior esquerdo */}
+                  <span className="absolute top-1 left-2 text-xs font-semibold opacity-70">
+                    {day.day}
+                  </span>
+
                   {day.hours > 0 && (
-                    <span className="text-xs mt-1">{day.hours}h</span>
+                    <>
+                      <span className="text-sm font-bold mt-3">{day.hours}h</span>
+                      {day.showCourse && (
+                        <span className="text-[11px] font-bold mt-1 opacity-80">
+                          {courseName}
+                        </span>
+                      )}
+                    </>
                   )}
                 </div>
               ))}

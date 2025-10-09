@@ -1,142 +1,642 @@
 {
-  "track": {
-    "title": "Automação Web com Selenium: Do Zero ao Page Object",
-    "level": "Basico",
-    "audience": "QAs manuais que desejam iniciar na automação, desenvolvedores júnior e estudantes com conhecimento básico de lógica de programação.",
-    "outcomes": [
-      "Configurar um ambiente de automação com Selenium WebDriver e uma linguagem de programação (ex: Java ou Python).",
-      "Criar scripts de automação para interagir com elementos de uma página web (clicar, preencher formulários).",
-      "Implementar o padrão de projeto Page Object Model (POM) para organizar os testes.",
-      "Utilizar esperas explícitas para lidar com o dinamismo das páginas web."
-    ],
-    "hours_total": 12,
-    "modules": [
-      {
-        "title": "Módulo 1: Primeiros Passos com Selenium",
-        "hours": 3,
-        "objectives": [
-          "Configurar o ambiente de desenvolvimento com Selenium.",
-          "Entender a arquitetura do Selenium WebDriver.",
-          "Escrever o primeiro script: abrir um navegador e navegar para uma URL."
-        ],
-        "prereqs": [
-          "Lógica de programação básica.",
-          "Conhecimento de HTML e CSS (básico)."
-        ],
-        "lessons": [
-          {
-            "title": "O que é Selenium e como funciona?",
-            "type": "video",
-            "duration_min": 10,
-            "videoUrl": "https://www.youtube.com/watch?v=h5PbhC7EE7s",
-            "summary": "Descubra a suíte Selenium e a arquitetura do WebDriver, o coração da automação web.",
-            "resources": [
-              "https://www.selenium.dev/documentation/"
+  "tracks": [
+    {
+      "id": 1,
+      "title": "Introdução ao QA",
+      "level": "Basico",
+      "audience": "Iniciantes em QA",
+      "outcomes": [
+        "Entender o papel do QA",
+        "Aprender conceitos básicos de teste"
+      ],
+      "hours_total": 6,
+      "modules": [
+        {
+          "title": "Módulo 1: Fundamentos de QA",
+          "hours": 3,
+          "objectives": [
+            "O que é QA",
+            "Tipos de testes"
+          ],
+          "prereqs": [],
+          "lessons": [
+            {
+              "title": "Introdução aos Testes de Software",
+              "type": "video",
+              "duration_min": 15,
+              "videoUrl": "https://www.youtube.com/watch?v=uHxH8inV9UM",
+              "summary": "Conceitos básicos de QA e testes",
+              "resources": [],
+              "practice": {
+                "steps": [
+                  "Exemplo de teste manual"
+                ],
+                "deliverable": "Print do teste realizado"
+              },
+              "quiz": [
+                {
+                  "q": "O que é QA?",
+                  "choices": [
+                    "Garantia de Qualidade",
+                    "Desenvolvimento",
+                    "Marketing",
+                    "Suporte"
+                  ],
+                  "answer": 0,
+                  "explanation": "QA é Garantia de Qualidade"
+                }
+              ]
+            }
+          ],
+          "mission": {
+            "type": "QA_MISSION",
+            "scenario": "Registrar 3 bugs em um site de teste",
+            "acceptance_criteria": [
+              "Bugs registrados corretamente"
             ],
-            "practice": {
-              "steps": [
-                "Instale o Java/Python e uma IDE (IntelliJ/VSCode).",
-                "Adicione a dependência do Selenium ao seu projeto (Maven/Pip).",
-                "Baixe o WebDriver correspondente ao seu navegador (ChromeDriver, GeckoDriver)."
-              ],
-              "deliverable": "Print da tela com o projeto configurado."
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
             },
-            "quiz": [
-              {
-                "q": "O que o WebDriver faz?",
-                "choices": [
-                  "Executa os testes diretamente.",
-                  "É uma API que permite a comunicação entre seu código e o navegador.",
-                  "É um gravador de testes.",
-                  "É um framework de relatórios."
-                ],
-                "answer": 1,
-                "explanation": "O WebDriver atua como uma ponte, traduzindo os comandos do seu código em ações que o navegador entende."
-              }
-            ]
+            "points": 10
           }
-        ],
-        "mission": {
-          "type": "QA_MISSION",
-          "scenario": "Crie um script de automação que abra o navegador, navegue para 'google.com', digite 'Testing Company' na barra de pesquisa e pressione Enter.",
-          "acceptance_criteria": [
-            "O script deve executar sem erros.",
-            "O navegador deve abrir e navegar para a URL correta.",
-            "O termo de pesquisa deve ser inserido e a busca realizada."
+        },
+        {
+          "title": "Módulo 2: Ferramentas de QA",
+          "hours": 3,
+          "objectives": [
+            "Apresentar ferramentas básicas de teste",
+            "Executar testes simples"
           ],
-          "rubric": {
-            "critical": 60,
-            "minor": 30,
-            "report_quality": 10
-          },
-          "points": 40
-        }
-      },
-      {
-        "title": "Módulo 2: Seletores e Page Object Model",
-        "hours": 4,
-        "objectives": [
-          "Identificar elementos na página usando diferentes estratégias de seletores (ID, CSS, XPath).",
-          "Aplicar o padrão Page Object Model (POM) para criar testes mais legíveis e fáceis de manter.",
-          "Refatorar um teste simples para usar POM."
-        ],
-        "prereqs": [
-          "Conclusão do Módulo 1"
-        ],
-        "lessons": [
-          {
-            "title": "A Arte de Encontrar Elementos: Seletores",
-            "type": "video",
-            "duration_min": 15,
-            "videoUrl": "https://www.youtube.com/embed/cO5bMX13x6s",
-            "summary": "Aprenda a localizar elementos de forma robusta usando seletores CSS e XPath. Entenda a hierarquia de preferência e como evitar seletores frágeis.",
-            "resources": [],
-            "practice": {
-              "steps": [
-                "Abra o DevTools em uma página de login.",
-                "Escreva o seletor CSS para o campo de email, senha e o botão de login.",
-                "Escreva o XPath para os mesmos elementos."
-              ],
-              "deliverable": "Documento de texto com os seletores."
+          "prereqs": [
+            "Módulo 1"
+          ],
+          "lessons": [
+            {
+              "title": "Explorando Ferramentas de QA",
+              "type": "video",
+              "duration_min": 20,
+              "videoUrl": "",
+              "summary": "Visão geral das ferramentas mais usadas em QA",
+              "resources": [],
+              "practice": {
+                "steps": [
+                  "Instalar uma ferramenta de teste"
+                ],
+                "deliverable": "Print da ferramenta em uso"
+              },
+              "quiz": []
+            }
+          ],
+          "mission": {
+            "type": "FALHA_CONTROLADA",
+            "scenario": "Executar teste de um site usando ferramenta",
+            "acceptance_criteria": [
+              "Teste realizado e registrado"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
             },
-            "quiz": [
-              {
-                "q": "Qual é a principal vantagem de usar um seletor de ID?",
-                "choices": [
-                  "É mais flexível.",
-                  "É único na página e geralmente o mais rápido.",
-                  "Funciona bem para elementos dinâmicos.",
-                  "É mais fácil de ler que CSS."
-                ],
-                "answer": 1,
-                "explanation": "IDs devem ser únicos por página, tornando-os uma forma muito confiável e performática de localizar um elemento."
-              }
-            ]
+            "points": 10
           }
-        ],
-        "mission": {
-          "type": "FALHA_CONTROLADA",
-          "scenario": "Nossa página de teste possui um botão de login com um ID dinâmico (ex: 'btn-login-12345', 'btn-login-67890'). Seu teste, que usava o ID completo, está quebrando. A classe do botão é sempre 'btn-submit'.",
-          "acceptance_criteria": [
-            "Corrija o seletor para localizar o botão de forma estável, sem usar o ID dinâmico.",
-            "O teste deve passar, clicando no botão de login com sucesso.",
-            "Use um seletor de classe ou um seletor CSS que ignore a parte dinâmica do ID."
-          ],
-          "rubric": {
-            "critical": 60,
-            "minor": 30,
-            "report_quality": 10
-          },
-          "points": 40
         }
-      }
-    ],
-    "badges": [
-      {
-        "code": "TRK_BASICO_POM",
-        "name": "Arquiteto de Testes",
-        "criteria": "Concluir o módulo de Page Object Model."
-      }
-    ]
-  }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Fundamentos de Testes de Software",
+      "level": "Basico",
+      "audience": "Iniciantes em QA",
+      "outcomes": [
+        "Aprender tipos de teste",
+        "Executar casos simples"
+      ],
+      "hours_total": 6,
+      "modules": [
+        {
+          "title": "Módulo 1: Tipos de Teste",
+          "hours": 3,
+          "objectives": [
+            "Teste funcional",
+            "Teste não funcional"
+          ],
+          "prereqs": [],
+          "lessons": [],
+          "mission": {
+            "type": "QA_MISSION",
+            "scenario": "Identificar tipos de teste em um site",
+            "acceptance_criteria": [
+              "Todos os testes classificados corretamente"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        },
+        {
+          "title": "Módulo 2: Executando Testes",
+          "hours": 3,
+          "objectives": [
+            "Criar casos de teste simples",
+            "Registrar evidências"
+          ],
+          "prereqs": [
+            "Módulo 1"
+          ],
+          "lessons": [],
+          "mission": {
+            "type": "FALHA_CONTROLADA",
+            "scenario": "Executar casos de teste em uma aplicação simples",
+            "acceptance_criteria": [
+              "Testes completados com sucesso"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Tipos de Teste e Estratégias",
+      "level": "Basico",
+      "audience": "Iniciantes em QA",
+      "outcomes": [
+        "Compreender estratégias de teste",
+        "Aplicar tipos de teste"
+      ],
+      "hours_total": 6,
+      "modules": [
+        {
+          "title": "Módulo 1",
+          "hours": 3,
+          "objectives": [
+            "Tipos de teste"
+          ],
+          "prereqs": [],
+          "lessons": [],
+          "mission": {
+            "type": "QA_MISSION",
+            "scenario": "Exemplo de teste",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        },
+        {
+          "title": "Módulo 2",
+          "hours": 3,
+          "objectives": [
+            "Aplicar estratégias"
+          ],
+          "prereqs": [
+            "Módulo 1"
+          ],
+          "lessons": [],
+          "mission": {
+            "type": "FALHA_CONTROLADA",
+            "scenario": "Exemplo de teste",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Ciclo de Vida do Bug",
+      "level": "Basico",
+      "audience": "Iniciantes",
+      "outcomes": [
+        "Entender ciclo de bug",
+        "Registrar bug"
+      ],
+      "hours_total": 6,
+      "modules": [
+        {
+          "title": "Módulo 1",
+          "hours": 3,
+          "objectives": [
+            "Lifecycle"
+          ],
+          "prereqs": [],
+          "lessons": [],
+          "mission": {
+            "type": "QA_MISSION",
+            "scenario": "Registrar bug",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        },
+        {
+          "title": "Módulo 2",
+          "hours": 3,
+          "objectives": [
+            "Prática de bug"
+          ],
+          "prereqs": [
+            "Módulo 1"
+          ],
+          "lessons": [],
+          "mission": {
+            "type": "FALHA_CONTROLADA",
+            "scenario": "Corrigir bug",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Testes de API: Automação com Postman e Newman",
+      "level": "Basico",
+      "audience": "QAs iniciantes",
+      "outcomes": [
+        "Entender API",
+        "Criar requisições"
+      ],
+      "hours_total": 6,
+      "modules": [
+        {
+          "title": "Módulo 1",
+          "hours": 3,
+          "objectives": [
+            "Postman"
+          ],
+          "prereqs": [],
+          "lessons": [],
+          "mission": {
+            "type": "QA_MISSION",
+            "scenario": "Testar API",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        },
+        {
+          "title": "Módulo 2",
+          "hours": 3,
+          "objectives": [
+            "Newman"
+          ],
+          "prereqs": [
+            "Módulo 1"
+          ],
+          "lessons": [],
+          "mission": {
+            "type": "FALHA_CONTROLADA",
+            "scenario": "Executar Newman",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Versionamento com Git e GitHub",
+      "level": "Basico",
+      "audience": "Iniciantes",
+      "outcomes": [
+        "Aprender Git",
+        "Versionar código"
+      ],
+      "hours_total": 6,
+      "modules": [
+        {
+          "title": "Módulo 1",
+          "hours": 3,
+          "objectives": [
+            "Git Básico"
+          ],
+          "prereqs": [],
+          "lessons": [],
+          "mission": {
+            "type": "QA_MISSION",
+            "scenario": "Criar repositório",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        },
+        {
+          "title": "Módulo 2",
+          "hours": 3,
+          "objectives": [
+            "GitHub"
+          ],
+          "prereqs": [
+            "Módulo 1"
+          ],
+          "lessons": [],
+          "mission": {
+            "type": "FALHA_CONTROLADA",
+            "scenario": "Fazer push",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Ambientes de Teste e Configurações",
+      "level": "Basico",
+      "audience": "Iniciantes",
+      "outcomes": [
+        "Preparar ambiente",
+        "Configurar ferramentas"
+      ],
+      "hours_total": 6,
+      "modules": [
+        {
+          "title": "Módulo 1",
+          "hours": 3,
+          "objectives": [
+            "Configuração"
+          ],
+          "prereqs": [],
+          "lessons": [],
+          "mission": {
+            "type": "QA_MISSION",
+            "scenario": "Configurar ambiente",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        },
+        {
+          "title": "Módulo 2",
+          "hours": 3,
+          "objectives": [
+            "Testar ambiente"
+          ],
+          "prereqs": [
+            "Módulo 1"
+          ],
+          "lessons": [],
+          "mission": {
+            "type": "FALHA_CONTROLADA",
+            "scenario": "Executar teste",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Relatórios e Evidências de Teste",
+      "level": "Basico",
+      "audience": "Iniciantes",
+      "outcomes": [
+        "Gerar relatórios",
+        "Registrar evidências"
+      ],
+      "hours_total": 6,
+      "modules": [
+        {
+          "title": "Módulo 1",
+          "hours": 3,
+          "objectives": [
+            "Relatórios"
+          ],
+          "prereqs": [],
+          "lessons": [],
+          "mission": {
+            "type": "QA_MISSION",
+            "scenario": "Criar relatório",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        },
+        {
+          "title": "Módulo 2",
+          "hours": 3,
+          "objectives": [
+            "Evidências"
+          ],
+          "prereqs": [
+            "Módulo 1"
+          ],
+          "lessons": [],
+          "mission": {
+            "type": "FALHA_CONTROLADA",
+            "scenario": "Registrar evidências",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Planejamento de Testes Manuais",
+      "level": "Basico",
+      "audience": "Iniciantes",
+      "outcomes": [
+        "Planejar casos",
+        "Executar testes"
+      ],
+      "hours_total": 6,
+      "modules": [
+        {
+          "title": "Módulo 1",
+          "hours": 3,
+          "objectives": [
+            "Planejar testes"
+          ],
+          "prereqs": [],
+          "lessons": [],
+          "mission": {
+            "type": "QA_MISSION",
+            "scenario": "Planejar teste",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        },
+        {
+          "title": "Módulo 2",
+          "hours": 3,
+          "objectives": [
+            "Executar testes"
+          ],
+          "prereqs": [
+            "Módulo 1"
+          ],
+          "lessons": [],
+          "mission": {
+            "type": "FALHA_CONTROLADA",
+            "scenario": "Executar teste",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Boas Práticas em QA",
+      "level": "Basico",
+      "audience": "Iniciantes",
+      "outcomes": [
+        "Adotar boas práticas",
+        "Evitar erros comuns"
+      ],
+      "hours_total": 6,
+      "modules": [
+        {
+          "title": "Módulo 1",
+          "hours": 3,
+          "objectives": [
+            "Boas práticas"
+          ],
+          "prereqs": [],
+          "lessons": [],
+          "mission": {
+            "type": "QA_MISSION",
+            "scenario": "Aplicar boas práticas",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        },
+        {
+          "title": "Módulo 2",
+          "hours": 3,
+          "objectives": [
+            "Evitar erros"
+          ],
+          "prereqs": [
+            "Módulo 1"
+          ],
+          "lessons": [],
+          "mission": {
+            "type": "FALHA_CONTROLADA",
+            "scenario": "Evitar erros comuns",
+            "acceptance_criteria": [
+              "Ok"
+            ],
+            "rubric": {
+              "critical": 60,
+              "minor": 30,
+              "report_quality": 10
+            },
+            "points": 10
+          }
+        }
+      ]
+    }
+  ]
 }

@@ -2,31 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { PlayCircle, CheckCircle, Clock, Lock } from 'lucide-react';
+import { PlayCircle, CheckCircle, Clock, ArrowLeft } from 'lucide-react';
 import { useProgress } from '@/hooks/useProgress';
 
-import gratuitoTrack from '@/data/tracks/gratuito.json';
 import basicoTrack from '@/data/tracks/basico.json';
 import intermediarioTrack from '@/data/tracks/intermediario.json';
 import avancadoTrack from '@/data/tracks/avancado.json';
 
 const trackMap = {
-  gratuito: gratuitoTrack.track,
-  basico: basicoTrack.track,
-  intermediario: intermediarioTrack.track,
-  avancado: avancadoTrack.track,
+  basico: basicoTrack.tracks,
+  intermediario: intermediarioTrack.tracks,
+  avancado: avancadoTrack.tracks,
 };
 
-const TrackDetail = () => {
-  const { trackId } = useParams();
+const bannerColors = {
+  basico: 'from-emerald-400 to-white',
+  intermediario: 'from-orange-400 to-white',
+  avancado: 'from-purple-400 to-white',
+};
+
+export default function TrackDetail() {
+  const { level, trackId } = useParams();
   const [track, setTrack] = useState(null);
   const { completedLessons, getTrackProgress } = useProgress();
 
   useEffect(() => {
-    if (trackId && trackMap[trackId]) {
-      setTrack(trackMap[trackId]);
+    if (level && trackId && trackMap[level]) {
+      const foundTrack = trackMap[level].find((t) => t.id === Number(trackId));
+      setTrack(foundTrack || null);
     }
-  }, [trackId]);
+  }, [level, trackId]);
 
   if (!track) {
     return (
@@ -36,26 +41,30 @@ const TrackDetail = () => {
     );
   }
 
-  const totalLessons = track.modules.reduce((acc, m) => acc + m.lessons.length, 0);
-  const progress = getTrackProgress(trackId);
+  const totalLessons = track.modules.reduce((acc, m) => acc + (m.lessons?.length || 0), 0);
+  const progress = getTrackProgress(`${level}-${trackId}`);
+  const bannerColor = bannerColors[level] || 'from-gray-200 to-gray-400';
 
   return (
     <>
       <Helmet>
         <title>{track.title} - Testing Courses</title>
-        <meta name="description" content={track.audience} />
       </Helmet>
 
       <div className="space-y-6">
-        {/* Header */}
+        <Link
+          to="/dashboard/tracks"
+          className="flex items-center text-sm text-primary font-medium hover:underline"
+        >
+          <ArrowLeft className="w-4 h-4 mr-1" />
+          Voltar para Trilhas
+        </Link>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-primary to-destructive rounded-2xl p-8 text-white"
+          className={`rounded-2xl p-8 text-black bg-gradient-to-br ${bannerColor}`}
         >
-          <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold mb-4">
-            {track.level}
-          </span>
           <h1 className="text-3xl font-bold mb-2">{track.title}</h1>
           <p className="text-white/90 mb-4">{track.audience}</p>
           <div className="flex items-center space-x-4 text-sm">
@@ -67,15 +76,18 @@ const TrackDetail = () => {
           </div>
           {progress > 0 && (
             <div className="mt-4">
-              <div className="w-full bg-white/20 rounded-full h-2.5">
-                <div className="bg-white h-2.5 rounded-full" style={{ width: `${progress}%` }}></div>
+              <div className="w-full bg-white/30 rounded-full h-2.5">
+                <div
+                  className="bg-white h-2.5 rounded-full transition-all"
+                  style={{ width: `${progress}%` }}
+                ></div>
               </div>
               <p className="text-right text-xs mt-1">{progress}% concluído</p>
             </div>
           )}
         </motion.div>
 
-        {/* Modules */}
+        {/* Módulos */}
         <div className="space-y-4">
           {track.modules.map((module, moduleIndex) => (
             <motion.div
@@ -90,18 +102,18 @@ const TrackDetail = () => {
                   Módulo {moduleIndex + 1}: {module.title}
                 </h2>
                 <p className="text-sm text-muted-foreground mt-1">
-                  {module.lessons.length} aulas • Aprox. {module.hours} horas
+                  {module.lessons?.length || 0} aulas • Aprox. {module.hours} horas
                 </p>
               </div>
 
               <div className="divide-y divide-border">
-                {module.lessons.map((lesson, lessonIndex) => {
-                  const lessonId = `${trackId}-${moduleIndex}-${lessonIndex}`;
+                {module.lessons?.map((lesson, lessonIndex) => {
+                  const lessonId = `${level}-${trackId}-${moduleIndex}-${lessonIndex}`;
                   const isCompleted = completedLessons.has(lessonId);
-                  
+
                   return (
                     <Link
-                      key={lesson.title}
+                      key={`${lesson.title}-${lessonIndex}`}
                       to={`/dashboard/lesson/${lessonId}`}
                       className="block p-4 hover:bg-muted transition-colors"
                     >
@@ -121,13 +133,13 @@ const TrackDetail = () => {
                           </div>
                         </div>
                         {isCompleted && (
-                          <span className="text-xs text-green-600 dark:text-green-400 font-semibold ml-2 whitespace-nowrap">
+                          <span className="text-xs text-green-600 font-semibold ml-2 whitespace-nowrap">
                             Concluído
                           </span>
                         )}
                       </div>
                     </Link>
-                  )
+                  );
                 })}
               </div>
             </motion.div>
@@ -136,6 +148,4 @@ const TrackDetail = () => {
       </div>
     </>
   );
-};
-
-export default TrackDetail;
+}

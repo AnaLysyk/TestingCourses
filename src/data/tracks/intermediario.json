@@ -1,132 +1,607 @@
 {
-  "track": {
-    "title": "Testes de API: Automação com Postman e Newman",
-    "level": "Intermediario",
-    "audience": "QAs com experiência em testes manuais ou automação web, e desenvolvedores que desejam aprofundar seus conhecimentos em testes de backend.",
-    "outcomes": [
-      "Criar e organizar requisições de API em collections do Postman.",
-      "Escrever scripts de teste em JavaScript no Postman para validar respostas de API (status, corpo, headers).",
-      "Automatizar a execução de collections via linha de comando com o Newman.",
-      "Integrar os testes de API em um pipeline de CI/CD simples (ex: GitHub Actions)."
-    ],
-    "hours_total": 15,
-    "modules": [
-      {
-        "title": "Módulo 1: Dominando o Postman",
-        "hours": 4,
-        "objectives": [
-          "Utilizar variáveis de ambiente e de coleção para gerenciar dados de teste.",
-          "Escrever pré-request scripts para preparar dados de teste.",
-          "Validar o CRUD de uma API usando uma collection."
-        ],
-        "prereqs": [
-          "Conhecimento básico de APIs REST e métodos HTTP.",
-          "Lógica de programação básica."
-        ],
-        "lessons": [
-          {
-            "title": "Variáveis e Ambientes no Postman",
-            "type": "video",
-            "duration_min": 12,
-            "videoUrl": "https://www.youtube.com/embed/4sC_y54hFk4",
-            "summary": "Aprenda a abstrair URLs, tokens e outros dados usando ambientes e variáveis, tornando suas collections reutilizáveis e fáceis de manter.",
-            "resources": [],
-            "practice": {
-              "steps": [
-                "Crie um ambiente 'Desenvolvimento' com uma variável 'base_url'.",
-                "Crie uma collection com uma requisição GET para '{{base_url}}/users'.",
-                "Execute a requisição e verifique se a variável foi substituída corretamente."
-              ],
-              "deliverable": "Export da collection e do ambiente do Postman (JSON)."
-            },
-            "quiz": [
-              {
-                "q": "Qual a principal diferença entre variáveis de coleção e de ambiente?",
-                "choices": [
-                  "Nenhuma, são a mesma coisa.",
-                  "Variáveis de ambiente são específicas para um ambiente (dev, qa, prod), enquanto as de coleção são compartilhadas em todas as requisições da collection.",
-                  "Variáveis de coleção são mais seguras.",
-                  "Variáveis de ambiente não podem ser alteradas por scripts."
-                ],
-                "answer": 1,
-                "explanation": "Ambientes permitem trocar facilmente o contexto de execução (ex: apontar para o servidor de QA ou de Produção), enquanto variáveis de coleção são para dados compartilhados dentro da mesma collection."
-              }
-            ]
-          }
-        ],
-        "mission": {
-          "type": "QA_MISSION",
-          "scenario": "Usando uma API pública de sua escolha (ex: JSONPlaceholder), crie uma collection no Postman que valide as 4 operações do CRUD para o recurso 'posts'.",
-          "acceptance_criteria": [
-            "A collection deve ter 4 requisições: POST (criar), GET (ler), PUT (atualizar) e DELETE (remover).",
-            "Use variáveis de coleção para armazenar o ID do post criado e reutilizá-lo nas outras requisições.",
-            "Cada requisição deve ter pelo menos um teste (assertion) para validar o status code da resposta."
-          ],
-          "rubric": {
-            "critical": 60,
-            "minor": 30,
-            "report_quality": 10
-          },
-          "points": 40
-        }
-      },
-      {
-        "title": "Módulo 2: Newman e Integração Contínua",
-        "hours": 5,
-        "objectives": [
-          "Instalar e executar o Newman via linha de comando.",
-          "Gerar diferentes tipos de relatórios (CLI, HTML, JUnit).",
-          "Criar um workflow simples no GitHub Actions para rodar os testes de API a cada push."
-        ],
-        "prereqs": [
-          "Conclusão do Módulo 1",
-          "Conhecimento básico de Git e GitHub."
-        ],
-        "lessons": [
-          {
-            "title": "Automatizando Collections com Newman",
-            "type": "video",
-            "duration_min": 15,
-            "videoUrl": "https://www.youtube.com/embed/a5u5s0-iL-o",
-            "summary": "Leve seus testes de API para o próximo nível executando-os fora do Postman, via linha de comando com o Newman, e integrando-os em processos automatizados.",
-            "resources": [
-              "https://learning.postman.com/docs/collections/using-newman-cli/command-line-integration-with-newman/"
+    "tracks": [
+        {
+            "id": 11,
+            "title": "Automação de Testes com Selenium",
+            "level": "Intermediario",
+            "audience": "QAs iniciando automação",
+            "outcomes": [
+                "Automatizar testes web",
+                "Usar Page Object Model"
             ],
-            "practice": {
-              "steps": [
-                "Instale o Node.js e o Newman (npm install -g newman).",
-                "Exporte a collection e o ambiente da missão anterior.",
-                "Execute a collection via Newman no seu terminal.",
-                "Gere um relatório HTML com o 'newman-reporter-htmlextra'."
-              ],
-              "deliverable": "Print do terminal com a execução do Newman e o arquivo de relatório HTML."
-            },
-            "quiz": []
-          }
-        ],
-        "mission": {
-          "type": "FALHA_CONTROLADA",
-          "scenario": "Uma nova regra de negócio foi implementada: ao criar um post (POST /posts), a API agora retorna o status 201 Created, mas seu teste no Postman ainda espera 200 OK. Isso está fazendo seu pipeline de CI falhar.",
-          "acceptance_criteria": [
-            "Ajuste o script de teste na requisição POST para validar o status code 201.",
-            "Execute a collection via Newman e confirme que todos os testes passam.",
-            "O relatório do Newman não deve apresentar nenhuma falha."
-          ],
-          "rubric": {
-            "critical": 60,
-            "minor": 30,
-            "report_quality": 10
-          },
-          "points": 40
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Selenium WebDriver",
+                    "hours": 3,
+                    "objectives": [
+                        "Configurar Selenium",
+                        "Executar scripts básicos"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Automatizar login em uma página de teste.",
+                        "acceptance_criteria": [
+                            "O login deve ser realizado com sucesso."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Page Object Model",
+                    "hours": 3,
+                    "objectives": [
+                        "Criar classes POM",
+                        "Refatorar testes simples para POM"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Refatore um teste para usar POM de forma estável.",
+                        "acceptance_criteria": [
+                            "O teste deve passar usando POM."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "title": "Testes de API com Newman e Postman Avançado",
+            "level": "Intermediario",
+            "audience": "QAs e desenvolvedores com experiência em API",
+            "outcomes": [
+                "Criar testes de API avançados",
+                "Automatizar via Newman"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Postman Avançado",
+                    "hours": 3,
+                    "objectives": [
+                        "Criar collections complexas",
+                        "Escrever scripts de teste em JS"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Criar uma collection avançada para validar uma API pública.",
+                        "acceptance_criteria": [
+                            "Todos os testes devem passar com sucesso."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Automação com Newman",
+                    "hours": 3,
+                    "objectives": [
+                        "Executar collections via Newman",
+                        "Gerar relatórios"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Automatize a execução da collection via Newman e verifique relatórios.",
+                        "acceptance_criteria": [
+                            "Execução automatizada sem erros."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 13,
+            "title": "BDD com Cucumber e Gherkin",
+            "level": "Intermediario",
+            "audience": "QAs e devs interessados em BDD",
+            "outcomes": [
+                "Escrever testes em BDD",
+                "Executar cenários automatizados"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Introdução ao BDD",
+                    "hours": 3,
+                    "objectives": [
+                        "Escrever cenários Gherkin",
+                        "Configurar Cucumber"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Escreva cenários BDD para uma funcionalidade simples.",
+                        "acceptance_criteria": [
+                            "Todos os cenários escritos corretamente."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Execução e Integração",
+                    "hours": 3,
+                    "objectives": [
+                        "Executar testes BDD",
+                        "Integrar com projeto existente"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Execute cenários BDD integrados com a aplicação.",
+                        "acceptance_criteria": [
+                            "Todos os testes devem passar."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 14,
+            "title": "Automação de Testes com Cypress",
+            "level": "Intermediario",
+            "audience": "QAs e devs web",
+            "outcomes": [
+                "Automatizar testes end-to-end",
+                "Escrever testes Cypress"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Introdução ao Cypress",
+                    "hours": 3,
+                    "objectives": [
+                        "Configurar Cypress",
+                        "Criar testes básicos"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Automatizar fluxo simples de login com Cypress.",
+                        "acceptance_criteria": [
+                            "Login realizado corretamente."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Testes Avançados com Cypress",
+                    "hours": 3,
+                    "objectives": [
+                        "Testes parametrizados",
+                        "Interceptação de requisições"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Criar testes com interceptação de API e asserts avançados.",
+                        "acceptance_criteria": [
+                            "Todos os testes passam."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 15,
+            "title": "Integração Contínua com Jenkins e GitHub Actions",
+            "level": "Intermediario",
+            "audience": "QAs e devs que querem CI/CD",
+            "outcomes": [
+                "Configurar pipelines",
+                "Executar testes automatizados"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Jenkins Básico",
+                    "hours": 3,
+                    "objectives": [
+                        "Criar job",
+                        "Executar build com testes"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Configurar job de build e testes em Jenkins.",
+                        "acceptance_criteria": [
+                            "Build e testes executados com sucesso."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: GitHub Actions",
+                    "hours": 3,
+                    "objectives": [
+                        "Criar workflow",
+                        "Integrar testes automatizados"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Executar testes automatizados em GitHub Actions.",
+                        "acceptance_criteria": [
+                            "Workflow executado corretamente."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 16,
+            "title": "Testes de Performance com JMeter",
+            "level": "Intermediario",
+            "audience": "QAs e devs que querem performance",
+            "outcomes": [
+                "Criar scripts JMeter",
+                "Analisar métricas de performance"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: JMeter Básico",
+                    "hours": 3,
+                    "objectives": [
+                        "Instalar JMeter",
+                        "Criar plano de teste simples"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Criar teste de carga básico com JMeter.",
+                        "acceptance_criteria": [
+                            "Teste executado corretamente."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Análise de Resultados",
+                    "hours": 3,
+                    "objectives": [
+                        "Interpretar gráficos",
+                        "Identificar gargalos"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Analisar resultados de um teste de carga e identificar problemas.",
+                        "acceptance_criteria": [
+                            "Relatório completo gerado."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 17,
+            "title": "Mock e Test Doubles em Testes",
+            "level": "Intermediario",
+            "audience": "QAs e devs",
+            "outcomes": [
+                "Usar mocks e doubles",
+                "Testar componentes isoladamente"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Mock Básico",
+                    "hours": 3,
+                    "objectives": [
+                        "Criar mocks"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Implementar mock em teste",
+                        "acceptance_criteria": [
+                            "Teste executado"
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Test Doubles",
+                    "hours": 3,
+                    "objectives": [
+                        "Criar stubs e fakes"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Implementar test double",
+                        "acceptance_criteria": [
+                            "Teste executado"
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 18,
+            "title": "Testes End-to-End e UI",
+            "level": "Intermediario",
+            "audience": "QAs e devs web",
+            "outcomes": [
+                "Criar testes E2E",
+                "Automatizar fluxo de UI"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Testes E2E",
+                    "hours": 3,
+                    "objectives": [
+                        "Automatizar fluxo completo"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Criar teste E2E",
+                        "acceptance_criteria": [
+                            "Fluxo automatizado"
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Testes de UI",
+                    "hours": 3,
+                    "objectives": [
+                        "Testar elementos visuais"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Automatizar teste de UI",
+                        "acceptance_criteria": [
+                            "Teste executado"
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 19,
+            "title": "Gestão de Casos e Suites de Teste",
+            "level": "Intermediario",
+            "audience": "QAs e devs",
+            "outcomes": [
+                "Organizar casos de teste",
+                "Gerenciar suites"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Casos de Teste",
+                    "hours": 3,
+                    "objectives": [
+                        "Criar casos"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Criar casos de teste",
+                        "acceptance_criteria": [
+                            "Casos criados"
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Suites de Teste",
+                    "hours": 3,
+                    "objectives": [
+                        "Agrupar casos"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Criar suites",
+                        "acceptance_criteria": [
+                            "Suites criadas"
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 20,
+            "title": "Automação de Testes de API com RestAssured",
+            "level": "Intermediario",
+            "audience": "QAs e devs",
+            "outcomes": [
+                "Automatizar testes API Java",
+                "Validar respostas de API"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Introdução ao RestAssured",
+                    "hours": 3,
+                    "objectives": [
+                        "Configurar RestAssured",
+                        "Testar GET e POST"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Testar API com RestAssured",
+                        "acceptance_criteria": [
+                            "Testes funcionando"
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Testes Avançados com RestAssured",
+                    "hours": 3,
+                    "objectives": [
+                        "Validar headers e payloads"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Testes avançados API",
+                        "acceptance_criteria": [
+                            "Testes passando"
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
         }
-      }
-    ],
-    "badges": [
-      {
-        "code": "TRK_INTER_NEWMAN",
-        "name": "Mestre da Automação",
-        "criteria": "Concluir o módulo de Newman e CI."
-      }
     ]
-  }
 }

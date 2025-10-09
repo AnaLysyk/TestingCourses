@@ -16,23 +16,38 @@ const ForumTopic = () => {
   const topic = {
     id: topicId,
     title: 'Como criar testes de API com Postman?',
-    author: 'Ana Silva',
-    content: 'Olá! Estou começando a criar testes de API e gostaria de entender como estruturar os testes no Postman. Alguém pode compartilhar boas práticas?',
+    author: {
+      name: 'Ana Silva',
+      role: 'Estudante de Testes de Software',
+      stars: 3,
+    },
+    content:
+      'Olá! Estou começando a criar testes de API e gostaria de entender como estruturar os testes no Postman. Alguém pode compartilhar boas práticas?',
     createdAt: '06/06/2025 14:32',
     views: 120,
     replies: [
       {
         id: '1',
-        author: 'Carlos Lima',
-        content: 'Oi Ana! No Postman você pode usar a aba "Tests" para escrever scripts em JavaScript. Uma boa prática é criar coleções organizadas e usar variáveis de ambiente.',
+        author: {
+          name: 'Carlos Lima',
+          role: 'QA Sênior',
+          stars: 5,
+        },
+        content:
+          'Oi Ana! No Postman você pode usar a aba "Tests" para escrever scripts em JavaScript. Uma boa prática é criar coleções organizadas e usar variáveis de ambiente.',
         createdAt: '06/06/2025 16:20',
         likes: 4,
         isSolution: false,
       },
       {
         id: '2',
-        author: 'Fernanda Alves',
-        content: 'Também recomendo usar o Postman CLI (Newman) para integrar com CI/CD. Você pode exportar suas coleções e rodar os testes automaticamente!',
+        author: {
+          name: 'Fernanda Alves',
+          role: 'Engenheira de Qualidade',
+          stars: 4,
+        },
+        content:
+          'Também recomendo usar o Postman CLI (Newman) para integrar com CI/CD. Você pode exportar suas coleções e rodar os testes automaticamente!',
         createdAt: '06/06/2025 18:45',
         likes: 7,
         isSolution: true,
@@ -42,18 +57,19 @@ const ForumTopic = () => {
 
   const handleSubmitReply = () => {
     if (!reply.trim()) return;
-    
+
     toast({
-      title: "Resposta enviada!",
-      description: "Sua resposta foi publicada com sucesso",
+      title: 'Resposta enviada!',
+      description: 'Sua resposta foi publicada com sucesso',
     });
     setReply('');
   };
 
   const handleLike = (replyId) => {
     toast({
-      title: "Curtido!",
-      description: "🚧 Este recurso ainda não está implementado—mas você pode solicitá-lo no próximo prompt! 🚀",
+      title: 'Curtido!',
+      description:
+        '🚧 Este recurso ainda não está implementado — mas você pode solicitá-lo no próximo prompt! 🚀',
     });
   };
 
@@ -67,7 +83,7 @@ const ForumTopic = () => {
       <div className="space-y-6">
         <Button
           variant="ghost"
-          onClick={() => navigate('/forum')}
+          onClick={() => navigate('/dashboard/forum')}
           className="mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
@@ -85,11 +101,20 @@ const ForumTopic = () => {
           <div className="flex items-center space-x-3 mb-4">
             <Avatar>
               <AvatarFallback className="bg-primary text-primary-foreground">
-                {topic.author.charAt(0)}
+                {topic.author.name.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-semibold">{topic.author}</p>
+              <p className="font-semibold flex items-center gap-2">
+                {topic.author.name}
+                <span className="text-sm text-muted-foreground">
+                  • {topic.author.role}
+                </span>
+                <span className="flex items-center text-yellow-500 text-sm ml-2">
+                  <Star className="h-4 w-4 mr-1 fill-yellow-500" />
+                  {topic.author.stars}
+                </span>
+              </p>
               <p className="text-sm text-muted-foreground">
                 Postado em {topic.createdAt}
               </p>
@@ -116,9 +141,10 @@ const ForumTopic = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`bg-card rounded-xl shadow-lg p-6 border relative ${
-                reply.isSolution ? 'border-2 border-yellow-400 bg-yellow-50 dark:bg-yellow-900/20' : ''
-              }`}
+              className={`bg-card rounded-xl shadow-lg p-6 border relative ${reply.isSolution
+                  ? 'border-2 border-yellow-400 bg-yellow-50 dark:bg-yellow-900/20'
+                  : ''
+                }`}
             >
               {reply.isSolution && (
                 <div className="absolute -top-3 right-4 flex items-center space-x-2 bg-yellow-400 text-white px-3 py-1 rounded-full text-xs font-bold">
@@ -130,11 +156,20 @@ const ForumTopic = () => {
               <div className="flex items-center space-x-3 mb-4">
                 <Avatar>
                   <AvatarFallback className="bg-primary text-primary-foreground">
-                    {reply.author.charAt(0)}
+                    {reply.author.name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-semibold">{reply.author}</p>
+                  <p className="font-semibold flex items-center gap-2">
+                    {reply.author.name}
+                    <span className="text-sm text-muted-foreground">
+                      • {reply.author.role}
+                    </span>
+                    <span className="flex items-center text-yellow-500 text-sm ml-2">
+                      <Star className="h-4 w-4 mr-1 fill-yellow-500" />
+                      {reply.author.stars}
+                    </span>
+                  </p>
                   <p className="text-sm text-muted-foreground">
                     {reply.createdAt}
                   </p>
@@ -152,7 +187,11 @@ const ForumTopic = () => {
                   <ThumbsUp className="h-4 w-4 mr-2" />
                   {reply.likes} Útil
                 </Button>
-                <Button variant="ghost" size="sm" className="text-yellow-500 hover:text-yellow-600">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-yellow-500 hover:text-yellow-600"
+                >
                   <Star className="h-4 w-4 mr-2" />
                   Marcar como melhor resposta
                 </Button>
@@ -175,10 +214,7 @@ const ForumTopic = () => {
             rows={5}
             className="mb-4"
           />
-          <Button
-            onClick={handleSubmitReply}
-            variant="destructive"
-          >
+          <Button onClick={handleSubmitReply} variant="destructive">
             Enviar Resposta
           </Button>
         </motion.div>

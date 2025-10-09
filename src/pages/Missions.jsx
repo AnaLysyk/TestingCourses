@@ -11,13 +11,12 @@ const QAMissionLogin = () => {
     'lacuna-2': '',
     'lacuna-3': '',
   });
-  const [result, setResult] = useState(null); // null, 'success', 'error'
+  const [result, setResult] = useState(null);
 
-  // Respostas corretas baseadas no HTML fornecido
   const correctAnswers = {
-    'lacuna-1': 'id', // input com id="username"
-    'lacuna-2': 'css', // input com name="password"
-    'lacuna-3': 'css-data', // button com data-action="login"
+    'lacuna-1': 'id',
+    'lacuna-2': 'css',
+    'lacuna-3': 'css-data',
   };
 
   const handleOptionChange = (lacunaId, value) => {
@@ -25,20 +24,15 @@ const QAMissionLogin = () => {
   };
 
   const checkAnswers = () => {
-    let allCorrect = true;
-    for (const lacunaId in correctAnswers) {
-      if (answers[lacunaId] !== correctAnswers[lacunaId]) {
-        allCorrect = false;
-        break;
-      }
-    }
+    const allCorrect = Object.keys(correctAnswers).every(
+      key => answers[key] === correctAnswers[key]
+    );
 
     if (allCorrect) {
       setResult('success');
       toast({
         title: "Parabéns!",
         description: "Você completou a missão com sucesso!",
-        variant: "default",
       });
     } else {
       setResult('error');
@@ -57,22 +51,67 @@ const QAMissionLogin = () => {
       transition={{ duration: 0.5 }}
       className="bg-card rounded-xl shadow-lg p-6 border"
     >
-      <h2 className="text-2xl font-bold mb-4">QA Mission - Complete o código com base na página de login</h2>
+      <h2 className="text-2xl font-bold mb-4">
+        QA Mission - Complete o código com base na página de login
+      </h2>
 
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">Página de Login de exemplo:</h3>
-        <div className="bg-muted rounded-lg p-4 flex items-center justify-center h-48 text-muted-foreground">
-          <p>
-            A página de login possui os seguintes elementos:
-            <ul className="list-disc list-inside ml-4 mt-1">
-              <li>Campo de usuário: `&lt;input type="text" id="username" placeholder="Usuário" /&gt;`</li>
-              <li>Campo de senha: `&lt;input type="password" name="password" placeholder="Senha" /&gt;`</li>
-              <li>Botão de login: `&lt;button type="submit" data-action="login"&gt;Entrar&lt;/button&gt;`</li>
-            </ul>
-          </p>
+        <h3 className="text-lg font-semibold mb-3">Página de Login de exemplo:</h3>
+        <div className="rounded-lg overflow-hidden border">
+          <iframe
+            srcDoc={`<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f4f4f4;
+      }
+      .login-box {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        width: 280px;
+      }
+      input, button {
+        width: 100%;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-box">
+      <input type="text" id="username" placeholder="Usuário" />
+      <input type="password" name="password" placeholder="Senha" />
+      <button type="submit" data-action="login">Entrar</button>
+    </div>
+  </body>
+</html>`}
+            title="Página de Login"
+            className="w-full h-96 bg-white"
+            sandbox="allow-scripts allow-same-origin"
+          />
         </div>
         <p className="text-sm text-muted-foreground mt-2">
-          Analise o HTML acima para escolher o melhor seletor para cada elemento.
+          Analise o código da página acima — inspecione os elementos no navegador para identificar os seletores corretos.
         </p>
       </div>
 
@@ -100,6 +139,7 @@ public class TesteLogin {"\n"}
       </div>
 
       <div className="space-y-6 mb-6">
+        {/* Lacuna 1 */}
         <div>
           <h3 className="text-lg font-semibold mb-2">Lacuna 1 - campoUsuario</h3>
           <div className="space-y-2">
@@ -110,7 +150,6 @@ public class TesteLogin {"\n"}
                 value="id"
                 checked={answers['lacuna-1'] === 'id'}
                 onChange={() => handleOptionChange('lacuna-1', 'id')}
-                className="form-radio text-primary"
               />
               <span>By.id("username")</span>
             </label>
@@ -121,7 +160,6 @@ public class TesteLogin {"\n"}
                 value="xpath"
                 checked={answers['lacuna-1'] === 'xpath'}
                 onChange={() => handleOptionChange('lacuna-1', 'xpath')}
-                className="form-radio text-primary"
               />
               <span>By.xpath("//input[@name='username']")</span>
             </label>
@@ -132,13 +170,13 @@ public class TesteLogin {"\n"}
                 value="css"
                 checked={answers['lacuna-1'] === 'css'}
                 onChange={() => handleOptionChange('lacuna-1', 'css')}
-                className="form-radio text-primary"
               />
               <span>By.cssSelector("input[name='username']")</span>
             </label>
           </div>
         </div>
 
+        {/* Lacuna 2 */}
         <div>
           <h3 className="text-lg font-semibold mb-2">Lacuna 2 - campoSenha</h3>
           <div className="space-y-2">
@@ -149,7 +187,6 @@ public class TesteLogin {"\n"}
                 value="id"
                 checked={answers['lacuna-2'] === 'id'}
                 onChange={() => handleOptionChange('lacuna-2', 'id')}
-                className="form-radio text-primary"
               />
               <span>By.id("password")</span>
             </label>
@@ -160,7 +197,6 @@ public class TesteLogin {"\n"}
                 value="xpath"
                 checked={answers['lacuna-2'] === 'xpath'}
                 onChange={() => handleOptionChange('lacuna-2', 'xpath')}
-                className="form-radio text-primary"
               />
               <span>By.xpath("//input[@name='password']")</span>
             </label>
@@ -171,13 +207,13 @@ public class TesteLogin {"\n"}
                 value="css"
                 checked={answers['lacuna-2'] === 'css'}
                 onChange={() => handleOptionChange('lacuna-2', 'css')}
-                className="form-radio text-primary"
               />
               <span>By.cssSelector("input[name='password']")</span>
             </label>
           </div>
         </div>
 
+        {/* Lacuna 3 */}
         <div>
           <h3 className="text-lg font-semibold mb-2">Lacuna 3 - botaoLogin</h3>
           <div className="space-y-2">
@@ -188,7 +224,6 @@ public class TesteLogin {"\n"}
                 value="id"
                 checked={answers['lacuna-3'] === 'id'}
                 onChange={() => handleOptionChange('lacuna-3', 'id')}
-                className="form-radio text-primary"
               />
               <span>By.id("loginBtn")</span>
             </label>
@@ -199,7 +234,6 @@ public class TesteLogin {"\n"}
                 value="xpath"
                 checked={answers['lacuna-3'] === 'xpath'}
                 onChange={() => handleOptionChange('lacuna-3', 'xpath')}
-                className="form-radio text-primary"
               />
               <span>By.xpath("//button[@id='loginBtn']")</span>
             </label>
@@ -210,7 +244,6 @@ public class TesteLogin {"\n"}
                 value="css-data"
                 checked={answers['lacuna-3'] === 'css-data'}
                 onChange={() => handleOptionChange('lacuna-3', 'css-data')}
-                className="form-radio text-primary"
               />
               <span>By.cssSelector("button[data-action='login']")</span>
             </label>
@@ -218,27 +251,17 @@ public class TesteLogin {"\n"}
         </div>
       </div>
 
-      <Button onClick={checkAnswers} className="w-full">
-        Conferir
-      </Button>
+      <Button onClick={checkAnswers} className="w-full">Conferir</Button>
 
       {result === 'success' && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-6 p-4 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded-lg flex items-center space-x-2"
-        >
+        <motion.div className="mt-6 p-4 bg-green-100 text-green-800 rounded-lg flex items-center space-x-2">
           <CheckCircle className="h-5 w-5" />
           <span>Todas as respostas estão corretas! Excelente trabalho!</span>
         </motion.div>
       )}
 
       {result === 'error' && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-6 p-4 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 rounded-lg flex items-center space-x-2"
-        >
+        <motion.div className="mt-6 p-4 bg-red-100 text-red-800 rounded-lg flex items-center space-x-2">
           <XCircle className="h-5 w-5" />
           <span>Algumas respostas estão incorretas. Revise e tente novamente!</span>
         </motion.div>
@@ -247,36 +270,36 @@ public class TesteLogin {"\n"}
   );
 };
 
-const Missions = () => {
-  return (
-    <>
-      <Helmet>
-        <title>Missões - Testing Courses</title>
-        <meta name="description" content="Participe de missões práticas e desafios para aprimorar suas habilidades em testes de software." />
-      </Helmet>
+const Missions = () => (
+  <>
+    <Helmet>
+      <title>Missões - Testing Courses</title>
+      <meta
+        name="description"
+        content="Participe de missões práticas e desafios para aprimorar suas habilidades em testes de software."
+      />
+    </Helmet>
 
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Missões Práticas</h1>
-          <p className="text-muted-foreground">
-            Coloque seus conhecimentos à prova com desafios reais de QA.
-          </p>
-        </div>
-
-        <QAMissionLogin />
-
-        {/* Placeholder for other missions */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="bg-card rounded-xl shadow-lg p-6 border text-center text-muted-foreground"
-        >
-          <p>🚧 Novas missões em breve! Fique ligado para mais desafios emocionantes! 🚀</p>
-        </motion.div>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold mb-2">Missões Práticas</h1>
+        <p className="text-muted-foreground">
+          Coloque seus conhecimentos à prova com desafios reais de QA.
+        </p>
       </div>
-    </>
-  );
-};
+
+      <QAMissionLogin />
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="bg-card rounded-xl shadow-lg p-6 border text-center text-muted-foreground"
+      >
+        🚧 Novas missões em breve! Fique ligado para mais desafios emocionantes! 🚀
+      </motion.div>
+    </div>
+  </>
+);
 
 export default Missions;

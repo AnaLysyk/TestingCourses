@@ -6,39 +6,36 @@ import { MessageSquare, ThumbsUp, MessageCircle, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 
+
 const Forum = () => {
   const categories = [
     { id: '1', name: 'Testes Manuais', color: 'bg-green-500' },
     { id: '2', name: 'Automação', color: 'bg-blue-500' },
     { id: '3', name: 'Ferramentas', color: 'bg-purple-500' },
-    { id: '4', name: 'Carreira', color: 'bg-orange-500' },
-    { id: '5', name: 'Outros', color: 'bg-gray-500' },
   ];
 
+  // 3 tópicos de exemplo — você pode adicionar/remover aqui conforme quiser
   const topics = [
     {
-      id: '1',
-      title: 'Como criar testes de API com Postman?',
-      author: 'Ana Silva',
-      category: 'Automação',
+      id: 'topic-1',
+      title: 'Como faço para montar um plano de teste para uma aplicação web?',
       replies: 3,
-      lastActivity: '10/06/2025',
+      lastActivity: '07/10/2025',
+      categoryId: '1',
     },
     {
-      id: '2',
-      title: 'Problemas com XPath no Selenium',
-      author: 'Carlos Lima',
-      category: 'Ferramentas',
-      replies: 5,
-      lastActivity: '09/06/2025',
-    },
-    {
-      id: '3',
-      title: 'Estratégias para testes mobile',
-      author: 'Fernanda Alves',
-      category: 'Testes Manuais',
+      id: 'topic-2',
+      title: 'Melhores práticas para usar Playwright vs Selenium em CI?',
       replies: 2,
-      lastActivity: '08/06/2025',
+      lastActivity: '05/10/2025',
+      categoryId: '2',
+    },
+    {
+      id: 'topic-3',
+      title: 'Ferramentas gratuitas para gestão de casos de teste?',
+      replies: 4,
+      lastActivity: '01/10/2025',
+      categoryId: '3',
     },
   ];
 
@@ -98,7 +95,7 @@ const Forum = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Link to={`/forum/${topic.id}`}>
+                <Link to={`/dashboard/forum/${topic.id}`}>
                   <div className="bg-card rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow border hover:border-primary">
                     <h3 className="text-lg font-bold mb-2 text-foreground">{topic.title}</h3>
                     <div className="flex items-center justify-between text-sm text-muted-foreground">

@@ -1,137 +1,614 @@
 {
-  "track": {
-    "title": "Tópicos Avançados: Performance e Testes Mobile",
-    "level": "Avancado",
-    "audience": "QAs e desenvolvedores sênior que já dominam automação web e de API e buscam expandir suas habilidades para testes de performance e mobile.",
-    "outcomes": [
-      "Planejar e executar um teste de carga básico com JMeter ou k6.",
-      "Analisar métricas de performance chave, como tempo de resposta, vazão (throughput) e taxa de erros.",
-      "Configurar o ambiente para automação de testes mobile com Appium.",
-      "Escrever um script de teste para uma funcionalidade simples em um aplicativo nativo (Android ou iOS)."
-    ],
-    "hours_total": 20,
-    "modules": [
-      {
-        "title": "Módulo 1: Testes de Performance com k6",
-        "hours": 6,
-        "objectives": [
-          "Escrever scripts de teste de carga em JavaScript com k6.",
-          "Definir cenários de teste com VUs (Virtual Users) e duração.",
-          "Estabelecer thresholds (limites) para validar a performance da aplicação."
-        ],
-        "prereqs": [
-          "Sólido conhecimento em testes de API.",
-          "Bom conhecimento de JavaScript."
-        ],
-        "lessons": [
-          {
-            "title": "Introdução ao k6: Performance como Código",
-            "type": "video",
-            "duration_min": 15,
-            "videoUrl": "https://www.youtube.com/embed/QjGk_jU37gI",
-            "summary": "Conheça o k6, uma ferramenta moderna para testes de performance, e aprenda a escrever seus primeiros scripts para simular carga em uma API.",
-            "resources": [
-              "https://k6.io/docs/"
+    "tracks": [
+        {
+            "id": 21,
+            "title": "Arquitetura de Testes Automatizados",
+            "level": "Avancado",
+            "audience": "QAs e desenvolvedores sênior",
+            "outcomes": [
+                "Projetar frameworks de testes escaláveis",
+                "Definir padrões de automação"
             ],
-            "practice": {
-              "steps": [
-                "Instale o k6.",
-                "Crie um script simples que faz uma requisição GET para uma API pública.",
-                "Execute o script com 10 VUs por 30 segundos.",
-                "Analise o resultado no console."
-              ],
-              "deliverable": "Arquivo do script k6 e print do resultado da execução."
-            },
-            "quiz": [
-              {
-                "q": "O que são 'VUs' no contexto do k6?",
-                "choices": [
-                  "Visual Units, para testes visuais.",
-                  "Virtual Users, para simular usuários concorrentes.",
-                  "Validation Units, para validar dados.",
-                  "Vulnerability Units, para testes de segurança."
-                ],
-                "answer": 1,
-                "explanation": "Virtual Users (VUs) simulam usuários simultâneos acessando sua aplicação, permitindo medir como ela se comporta sob carga."
-              }
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Design de Framework",
+                    "hours": 3,
+                    "objectives": [
+                        "Definir arquitetura de testes",
+                        "Escolher padrões de projeto"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Planejar a arquitetura de um framework de automação completo.",
+                        "acceptance_criteria": [
+                            "Arquitetura documentada e aprovada."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Implementação e Estrutura",
+                    "hours": 3,
+                    "objectives": [
+                        "Criar estrutura de pastas",
+                        "Organizar módulos e helpers"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Implementar a estrutura inicial do framework em um projeto de teste.",
+                        "acceptance_criteria": [
+                            "Framework inicial funcionando."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
             ]
-          }
-        ],
-        "mission": {
-          "type": "QA_MISSION",
-          "scenario": "Sua tarefa é criar um teste de estresse para o endpoint GET /posts de uma API pública. O teste deve verificar se o tempo de resposta médio (p95) permanece abaixo de 500ms sob uma carga de 50 VUs.",
-          "acceptance_criteria": [
-            "O script k6 deve simular 50 VUs por 1 minuto.",
-            "Um threshold deve ser definido para falhar o teste se o p95(http_req_duration) for maior que 500.",
-            "A taxa de erros (http_req_failed) deve ser zero."
-          ],
-          "rubric": {
-            "critical": 60,
-            "minor": 30,
-            "report_quality": 10
-          },
-          "points": 40
+        },
+        {
+            "id": 22,
+            "title": "CI/CD com Pipelines de QA",
+            "level": "Avancado",
+            "audience": "QAs e devs que trabalham com pipelines",
+            "outcomes": [
+                "Integrar testes automatizados a pipelines CI/CD",
+                "Automatizar deploy e relatórios"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Pipelines Básicos",
+                    "hours": 3,
+                    "objectives": [
+                        "Criar pipeline simples",
+                        "Executar testes automatizados"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Criar pipeline de CI que execute testes de regressão automaticamente.",
+                        "acceptance_criteria": [
+                            "Pipeline funcionando corretamente."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Integração Avançada",
+                    "hours": 3,
+                    "objectives": [
+                        "Gerar relatórios avançados",
+                        "Enviar notificações em falhas"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Configurar pipeline que gera relatórios HTML e notifica falhas via Slack.",
+                        "acceptance_criteria": [
+                            "Relatórios gerados e notificações funcionando."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 23,
+            "title": "Testes com Integração em Containers (Docker)",
+            "level": "Avancado",
+            "audience": "QAs e devs com conhecimento em containers",
+            "outcomes": [
+                "Executar testes em ambientes containerizados",
+                "Simular diferentes ambientes facilmente"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Docker Básico",
+                    "hours": 3,
+                    "objectives": [
+                        "Criar containers",
+                        "Subir ambientes para testes"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Criar container com ambiente de teste completo.",
+                        "acceptance_criteria": [
+                            "Container funcionando e testes executando."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Integração de Testes",
+                    "hours": 3,
+                    "objectives": [
+                        "Executar testes dentro de containers",
+                        "Gerar relatórios consistentes"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Rodar suíte de testes automatizados dentro de containers Docker.",
+                        "acceptance_criteria": [
+                            "Testes executados corretamente em container."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 24,
+            "title": "Automação Paralela e Escalabilidade",
+            "level": "Avancado",
+            "audience": "QAs e devs que precisam otimizar execução de testes",
+            "outcomes": [
+                "Executar testes em paralelo",
+                "Reduzir tempo de execução de suítes grandes"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Paralelismo Básico",
+                    "hours": 3,
+                    "objectives": [
+                        "Configurar execução paralela",
+                        "Executar múltiplos testes simultaneamente"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Configurar e executar testes paralelos em framework existente.",
+                        "acceptance_criteria": [
+                            "Testes executados em paralelo sem conflitos."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Escalabilidade",
+                    "hours": 3,
+                    "objectives": [
+                        "Distribuir testes em múltiplos nodes",
+                        "Gerenciar recursos de execução"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Distribuir testes em diversos nodes para reduzir tempo total.",
+                        "acceptance_criteria": [
+                            "Execução escalável concluída com sucesso."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 25,
+            "title": "Frameworks Customizados em Cypress e Playwright",
+            "level": "Avancado",
+            "audience": "QAs e devs web avançados",
+            "outcomes": [
+                "Criar frameworks customizados",
+                "Integrar ferramentas de teste"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Cypress Custom",
+                    "hours": 3,
+                    "objectives": [
+                        "Configurar Cypress customizado",
+                        "Criar comandos reutilizáveis"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Criar framework Cypress customizado com comandos reutilizáveis.",
+                        "acceptance_criteria": [
+                            "Framework funcionando corretamente."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Playwright Custom",
+                    "hours": 3,
+                    "objectives": [
+                        "Configurar Playwright custom",
+                        "Integrar relatórios e hooks"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Criar framework Playwright customizado com integração de relatórios.",
+                        "acceptance_criteria": [
+                            "Framework funcionando e relatórios gerados."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 26,
+            "title": "Testes de Segurança com OWASP ZAP",
+            "level": "Avancado",
+            "audience": "QAs e devs focados em segurança",
+            "outcomes": [
+                "Executar testes de segurança automatizados",
+                "Detectar vulnerabilidades comuns"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: OWASP ZAP Básico",
+                    "hours": 3,
+                    "objectives": [
+                        "Instalar ZAP",
+                        "Executar scan automatizado"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Executar scan básico de segurança em aplicação de teste.",
+                        "acceptance_criteria": [
+                            "Vulnerabilidades identificadas corretamente."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Testes Avançados",
+                    "hours": 3,
+                    "objectives": [
+                        "Configurar regras avançadas",
+                        "Gerar relatórios detalhados"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Executar testes avançados e gerar relatório completo de segurança.",
+                        "acceptance_criteria": [
+                            "Relatório completo gerado e analisado."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 27,
+            "title": "QA em Ambientes Cloud e Microserviços",
+            "level": "Avancado",
+            "audience": "QAs e devs em cloud",
+            "outcomes": [
+                "Testar aplicações distribuídas",
+                "Validar microserviços"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Cloud Basics",
+                    "hours": 3,
+                    "objectives": [
+                        "Entender cloud e containers",
+                        "Configurar ambiente de teste"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Configurar ambiente de teste para microserviço em cloud.",
+                        "acceptance_criteria": [
+                            "Ambiente pronto para testes."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Testando Microserviços",
+                    "hours": 3,
+                    "objectives": [
+                        "Executar testes unitários e integração",
+                        "Validar comunicação entre serviços"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Testar integração entre microserviços em cloud.",
+                        "acceptance_criteria": [
+                            "Testes executados com sucesso."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 28,
+            "title": "Estratégias de Teste Baseadas em Risco",
+            "level": "Avancado",
+            "audience": "QAs e líderes de QA",
+            "outcomes": [
+                "Definir estratégias de teste baseadas em risco",
+                "Priorizar testes críticos"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Identificação de Riscos",
+                    "hours": 3,
+                    "objectives": [
+                        "Mapear riscos de aplicação",
+                        "Priorizar áreas críticas"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Mapear riscos de um sistema e criar plano de teste baseado em risco.",
+                        "acceptance_criteria": [
+                            "Plano criado e aprovado."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Priorização e Execução",
+                    "hours": 3,
+                    "objectives": [
+                        "Priorizar casos críticos",
+                        "Executar testes baseados em risco"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Executar suíte de teste priorizando áreas de maior risco.",
+                        "acceptance_criteria": [
+                            "Testes críticos executados corretamente."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 29,
+            "title": "Automação com Inteligência Artificial",
+            "level": "Avancado",
+            "audience": "QAs e devs interessados em IA",
+            "outcomes": [
+                "Integrar IA em testes automatizados",
+                "Gerar insights de teste com ML"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Introdução à IA em QA",
+                    "hours": 3,
+                    "objectives": [
+                        "Entender ML e IA",
+                        "Aplicar IA para geração de testes"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Aplicar técnicas de IA para criar casos de teste inteligentes.",
+                        "acceptance_criteria": [
+                            "Casos de teste gerados automaticamente."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Testes Assistidos por IA",
+                    "hours": 3,
+                    "objectives": [
+                        "Executar testes assistidos por IA",
+                        "Analisar resultados preditivos"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Executar suíte de testes com recomendações geradas por IA.",
+                        "acceptance_criteria": [
+                            "Execução assistida funcionando corretamente."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
+        },
+        {
+            "id": 30,
+            "title": "Liderança e Mentoria em QA",
+            "level": "Avancado",
+            "audience": "Líderes de QA e mentores",
+            "outcomes": [
+                "Gerenciar equipes de QA",
+                "Mentorar profissionais juniores"
+            ],
+            "hours_total": 6,
+            "modules": [
+                {
+                    "title": "Módulo 1: Liderança em QA",
+                    "hours": 3,
+                    "objectives": [
+                        "Gerenciar equipe de QA",
+                        "Planejar roadmap de testes"
+                    ],
+                    "prereqs": [],
+                    "lessons": [],
+                    "mission": {
+                        "type": "QA_MISSION",
+                        "scenario": "Criar plano de liderança e distribuição de tarefas para equipe de QA.",
+                        "acceptance_criteria": [
+                            "Plano aprovado pelo gerente."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                },
+                {
+                    "title": "Módulo 2: Mentoria e Treinamento",
+                    "hours": 3,
+                    "objectives": [
+                        "Mentorar QAs juniores",
+                        "Organizar treinamentos internos"
+                    ],
+                    "prereqs": [
+                        "Módulo 1"
+                    ],
+                    "lessons": [],
+                    "mission": {
+                        "type": "FALHA_CONTROLADA",
+                        "scenario": "Criar plano de mentoria e conduzir um treinamento interno.",
+                        "acceptance_criteria": [
+                            "Mentoria realizada com feedback positivo."
+                        ],
+                        "rubric": {
+                            "critical": 60,
+                            "minor": 30,
+                            "report_quality": 10
+                        },
+                        "points": 10
+                    }
+                }
+            ]
         }
-      },
-      {
-        "title": "Módulo 2: Automação Mobile com Appium",
-        "hours": 8,
-        "objectives": [
-          "Configurar o Appium Server e o Appium Inspector.",
-          "Entender o conceito de Desired Capabilities para iniciar uma sessão de teste.",
-          "Localizar elementos em um app nativo e interagir com eles."
-        ],
-        "prereqs": [
-          "Experiência com Selenium WebDriver.",
-          "Conhecimento de uma linguagem de programação (Java, Python, etc.)."
-        ],
-        "lessons": [
-          {
-            "title": "Configurando o Ambiente Appium",
-            "type": "video",
-            "duration_min": 20,
-            "videoUrl": "https://www.youtube.com/embed/T0iSe_I3a5g",
-            "summary": "Um guia passo a passo para instalar todas as ferramentas necessárias para começar a automatizar testes mobile: Node.js, Appium, Android Studio (com emulador) e Appium Inspector.",
-            "resources": [],
-            "practice": {
-              "steps": [
-                "Siga o guia e instale todo o software necessário.",
-                "Inicie o Appium Server.",
-                "Abra o Appium Inspector e conecte-se a um emulador Android com um aplicativo de exemplo."
-              ],
-              "deliverable": "Print da tela do Appium Inspector mostrando a tela do aplicativo espelhada."
-            },
-            "quiz": []
-          }
-        ],
-        "mission": {
-          "type": "FALHA_CONTROLADA",
-          "scenario": "Em nosso aplicativo de exemplo, o botão de login tem um 'content-desc' (accessibility ID) no Android, mas no iOS ele não tem. Seu script de teste, que usa o accessibility ID, funciona no Android mas falha no iOS. O elemento, no entanto, tem um XPath único em ambas as plataformas.",
-          "acceptance_criteria": [
-            "Refatore o código para usar uma estratégia de localização que funcione tanto no Android quanto no iOS.",
-            "Implemente uma lógica condicional (se for iOS, use XPath; se for Android, use Accessibility ID) ou encontre um localizador comum.",
-            "O teste de login deve passar em ambas as plataformas."
-          ],
-          "rubric": {
-            "critical": 60,
-            "minor": 30,
-            "report_quality": 10
-          },
-          "points": 40
-        }
-      }
-    ],
-    "badges": [
-      {
-        "code": "TRK_AVANCADO_PERF",
-        "name": "Engenheiro de Performance",
-        "criteria": "Concluir o módulo de Testes de Performance."
-      },
-      {
-        "code": "TRK_AVANCADO_MOBILE",
-        "name": "Ninja Mobile",
-        "criteria": "Concluir o módulo de Automação Mobile com Appium."
-      }
     ]
-  }
 }

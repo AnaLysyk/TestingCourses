@@ -1,0 +1,32 @@
+--Dashboard - Feito
+
+progresso com base no ultimo curso assistido
+
+progresso geral do curso
+continuar com progresso com base no modulo
+
+--Trilhas
+
+melhorar o afunilamento das trilhas
+
+--Plano de Estudos - Feito
+
+cronograma usar as horas do moduluos
+cronograma geral apenas para foco
+
+--Profile - Feito
+
+incluir cursos concluidos
+
+estrelas / respotas KD dinâmico
+
+notas das skills como níveis de skyrim
+soft skills incluir
+
+badge gamificação interna
+incluir "ultimas" badges no export
+
+--Material Extra - Feito
+
+criar subgrupos e indicar algo
+
