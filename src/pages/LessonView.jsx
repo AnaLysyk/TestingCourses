@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom'; // ⬅️ adicionado useLocation
 import { motion } from 'framer-motion';
 import { CheckCircle, ArrowLeft, ArrowRight, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ const trackMap = {
 const LessonView = () => {
   const { lessonId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation(); // ⬅️ adicionado
   const { completeLesson, getNextLessonId } = useProgress();
   const [lesson, setLesson] = useState(null);
   const [nextLessonId, setNextLessonId] = useState(null);
@@ -36,7 +37,7 @@ const LessonView = () => {
   const videoRef = useRef(null);
   const [showOptions, setShowOptions] = useState(false);
   const [originalTime, setOriginalTime] = useState(0);
-  const [choiceMade, setChoiceMade] = useState(false); // para não mostrar prompt novamente
+  const [choiceMade, setChoiceMade] = useState(false);
 
   useEffect(() => {
     if (!lessonId) return;
@@ -82,7 +83,14 @@ const LessonView = () => {
     setChoiceMade(false);
   }, [lessonId, getNextLessonId]);
 
-  // Vídeo interativo: pausa aos 5s e mostra opções apenas no vídeo original
+  // ⬇️ NOVO: ao detectar #notes, abre a aba "Notas" automaticamente
+  useEffect(() => {
+    if (location.hash === '#notes') {
+      setActiveTab('notas');
+    }
+  }, [location.hash]);
+
+  // Vídeo interativo
   useEffect(() => {
     if (!videoRef.current) return;
 
@@ -110,14 +118,12 @@ const LessonView = () => {
       videoRef.current.currentTime = originalTime;
       videoRef.current.play();
     } else {
-      const tempVideo = option; // jelly ou sintel
-      const currentSrc = videoRef.current.src;
-
+      const tempVideo = option;
       videoRef.current.src = `/${tempVideo}.mp4`;
       videoRef.current.play();
 
       const handleEnded = () => {
-        videoRef.current.src = '/bunny.mp4'; // volta para vídeo original
+        videoRef.current.src = '/bunny.mp4';
         videoRef.current.currentTime = originalTime;
         videoRef.current.play();
         videoRef.current.removeEventListener('ended', handleEnded);
@@ -271,7 +277,6 @@ const LessonView = () => {
               className="w-full h-full object-cover"
               controls
               onLoadedMetadata={() => {
-                // reset flags ao carregar
                 setChoiceMade(false);
                 setShowOptions(false);
                 setOriginalTime(0);

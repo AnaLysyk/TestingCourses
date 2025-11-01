@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { Trophy, Flame, Star } from 'lucide-react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Trophy, Flame, Star, Camera } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import jsPDF from 'jspdf';
+import { generatePDF } from '../components/generatePDF';
 
 const Profile = () => {
+  const [profileImage, setProfileImage] = useState(
+    localStorage.getItem('profileImage') || '/profile.jpg'
+  );
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Lê o arquivo e converte para base64
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      localStorage.setItem('profileImage', base64data); // salva no navegador
+      setProfileImage(base64data); // atualiza a exibição
+    };
+    reader.readAsDataURL(file);
+  };
+
   const user = {
     name: 'Bruno Mocellin',
     email: 'brun0_lp@hotmail.com',
@@ -43,7 +61,7 @@ const Profile = () => {
   ];
 
   const courses = [
-    'Testes de API: Automação com Postman e Newman',
+    'Introdução ao QA',
     'Fundamentos de QA: A Base para a Qualidade',
   ];
 
@@ -51,60 +69,6 @@ const Profile = () => {
   const totalRatedAnswers = 34;
   const totalStars = 150;
   const kdRatio = ((totalStars / totalRatedAnswers) * (totalRatedAnswers / totalAnswers) * 5).toFixed(2);
-
-  const exportPDF = () => {
-    const doc = new jsPDF();
-    let y = 10;
-    doc.setFontSize(16);
-    doc.text(user.name, 10, y);
-    y += 8;
-    doc.setFontSize(12);
-    doc.text(`Cargo: ${user.title}`, 10, y);
-    y += 6;
-    doc.text(user.description, 10, y);
-    y += 10;
-    
-    doc.text('Links:', 10, y);
-    y += 6;
-    doc.textWithLink('GitHub', 12, y, { url: user.github }); y += 6;
-    doc.textWithLink('LinkedIn', 12, y, { url: user.linkedin }); y += 6;
-    doc.textWithLink('Instagram', 12, y, { url: user.instagram }); y += 6;
-    doc.textWithLink('Outros', 12, y, { url: user.other });
-    y += 6;
-    y += 6;
-    doc.text('Cursos Concluídos:', 10, y);
-    y += 6;
-    courses.forEach((c) => {
-      doc.text(`• ${c}`, 12, y);
-      y += 6;
-    });
-
-    y += 6;
-    doc.text('Hard Skills:', 10, y);
-    y += 6;
-    hardSkills.forEach((s) => {
-      doc.text(`${s.name}: LVL. ${s.level}`, 12, y);
-      y += 6;
-    });
-
-    y += 6;
-    doc.text('Soft Skills:', 10, y);
-    y += 6;
-    softSkills.forEach((s) => {
-      doc.text(`${s.name}: LVL. ${s.level}`, 12, y);
-      y += 6;
-    });
-
-    y += 6;
-    doc.text('Badges:', 10, y);
-    badges.slice(0, 2).forEach((b) => {
-      doc.text(`${b.name}`, 12, y);
-      y += 6;
-    });
-
-
-    doc.save(`${user.name}.pdf`);
-  };
 
   return (
     <>
@@ -119,12 +83,29 @@ const Profile = () => {
           animate={{ opacity: 1, y: 0 }}
           className="bg-gradient-to-br from-primary to-destructive rounded-2xl p-8 text-white relative"
         >
-          <div className="flex items-center space-x-6">
-            <Avatar className="h-24 w-24 border-4 border-white">
-              <AvatarFallback className="bg-white text-primary text-3xl">
-                {user.name.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
+          <div className="flex items-center space-x-6 relative">
+            <div className="relative">
+              <Avatar className="h-24 w-24 border-4 border-white">
+                <AvatarImage src={profileImage} alt="Foto de perfil" />
+                <AvatarFallback className="bg-white text-primary text-3xl">
+                  {user.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <label
+                htmlFor="fileInput"
+                className="absolute bottom-0 right-0 bg-black/70 rounded-full p-1 cursor-pointer hover:bg-black/90 transition"
+                title="Alterar foto de perfil"
+              >
+                <Camera className="h-5 w-5 text-white" />
+              </label>
+              <input
+                id="fileInput"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageChange}
+              />
+            </div>
 
             <div className="flex-1">
               <h1 className="text-3xl font-bold mb-1">{user.name}</h1>
@@ -169,7 +150,9 @@ const Profile = () => {
           </div>
 
           <div className="absolute top-4 right-4">
-            <Button onClick={exportPDF} variant="secondary" size="sm">Exportar PDF</Button>
+            <Button onClick={() => generatePDF(user, courses, hardSkills, softSkills, badges, kdRatio)} variant="secondary" size="sm">
+              Exportar PDF
+            </Button>
           </div>
         </motion.div>
 
@@ -193,7 +176,7 @@ const Profile = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {courses.map((c, i) => (
               <Link
-                to={`/dashboard/tracks/${encodeURIComponent(c)}`}
+                to={`/dashboard/tracks/basico/1`}
                 key={i}
                 className="p-4 bg-muted hover:bg-primary/10 rounded-xl shadow cursor-pointer transition text-center"
                 title={`Ver detalhes de ${c}`}
@@ -217,12 +200,59 @@ const Profile = () => {
               {section.data.map((s) => (
                 <div key={s.name} className="flex justify-between mb-2 cursor-help" title={`Nível atual: ${s.level}`}>
                   <span>{s.name}</span>
-                  <span>LVL. {s.level}</span>
+                  <span><strong>LVL. {s.level}</strong></span>
                 </div>
               ))}
             </motion.div>
           ))}
         </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-card rounded-xl shadow-lg p-6 border"
+        >
+          <h2 className="text-xl font-bold mb-4">📝 Notas</h2>
+
+          <div className="space-y-3">
+            {[
+              {
+                course: 'Introdução ao QA',
+                timestamp: '03:42',
+                desc: 'Explicação sobre os diferentes tipos de testes e quando aplicá-los em um ciclo de desenvolvimento.',
+                link: 'http://localhost:3000/dashboard/lesson/basico-1-0-0#notes',
+              },
+              {
+                course: 'Fundamentos de QA: A Base para a Qualidade',
+                timestamp: '12:10',
+                desc: 'Momento em que o instrutor mostra na prática como criar casos de teste eficientes.',
+                link: '/dashboard/tracks/basico/2#t=12m10s',
+              },
+              {
+                course: 'Automação de Testes - Primeiros Passos',
+                timestamp: '07:55',
+                desc: 'Demonstração inicial do uso do Playwright para automatizar testes de interface web.',
+                link: '/dashboard/tracks/basico/3#t=7m55s',
+              },
+            ].map((note, i) => (
+              <div
+                key={i}
+                className="p-4 border rounded-lg hover:bg-muted/50 transition"
+              >
+                <div className="flex justify-between items-center mb-1">
+                  <p className="font-semibold">{note.course}</p>
+                  <Link
+                    to={note.link}
+                    className="text-primary font-mono text-sm hover:underline"
+                    title="Ir para o ponto no curso"
+                  >
+                    {note.timestamp}
+                  </Link>
+                </div>
+                <p className="text-sm text-muted-foreground truncate">{note.desc}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Badges */}
         <motion.div
@@ -235,11 +265,10 @@ const Profile = () => {
             {badges.map((b) => (
               <div
                 key={b.id}
-                className={`p-4 rounded-xl text-center transition cursor-help ${
-                  b.earned
-                    ? 'bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/30 dark:to-yellow-800/30'
-                    : 'bg-muted opacity-50'
-                }`}
+                className={`p-4 rounded-xl text-center transition cursor-help ${b.earned
+                  ? 'bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/30 dark:to-yellow-800/30'
+                  : 'bg-muted opacity-50'
+                  }`}
                 title={`Próxima variação: ${b.next}`}
               >
                 <div className="text-4xl mb-2">{b.name.split(' ')[0]}</div>

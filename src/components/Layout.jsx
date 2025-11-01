@@ -80,10 +80,17 @@ const Layout = () => {
           <Link to="/dashboard/profile" className="block mb-3">
             <div className="flex items-center space-x-3">
               <Avatar>
+                {/* tenta carregar imagem salva no localStorage */}
+                <img
+                  src={localStorage.getItem('profileImage') || '/profile.jpg'}
+                  alt="Foto de perfil"
+                  className="h-full w-full object-cover"
+                />
                 <AvatarFallback className="bg-primary text-primary-foreground">
                   {user?.name?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
+
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{user?.name}</p>
                 <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
